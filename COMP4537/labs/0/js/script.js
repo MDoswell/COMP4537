@@ -3,15 +3,16 @@
 const messages = {prompt: "How many buttons to create?", controlText: "Go!", invalidInput: "Invalid input", success: "Excellent memory!", failure: "Wrong order!"};
 
 class Control {
-    constructor(input, button) {
+    constructor(input, button, buttonDiv) {
         this.input = document.getElementById(input);
         this.button = document.getElementById(button);
+        this.buttonDiv = document.getElementById(buttonDiv);
         this.button.onclick = () => this.startGame(this);
     }
 
     startGame(control) {
         if (control.isValidInput()) {
-            control.game = new Game(control.input.value);    
+            control.game = new Game(control.input.value, control.buttonDiv);    
         }
     }
 
@@ -25,21 +26,36 @@ class Control {
 }
 
 class Game {
-    constructor(test) {
-        alert(test);
+    constructor(n, buttonDiv) {
+        this.n = n;
+        this.buttons = [];
+        for (let i = 0; i < n; i++) {
+            let button = new Button(i, '0px', `${i * 200}px`)
+            this.buttons.push(button);
+            buttonDiv.appendChild(button.button);
+        }
     }
 }
 
 class Button {
-    constructor(test) {
+    constructor(number, top, left) {
+        this.button = document.createElement('button');
+        this.button.classList.add('memory-button');
+        this.button.style.top = top;
+        this.button.style.left = left;
+        this.button.innerHTML = number + 1;
+        this.button.style.backgroundColor = this.getRandomColor();
+    }
 
+    getRandomColor() {
+        return `rgb(${255}, ${99}, ${71})`
     }
 }
 
 let control;
 
 initializeGame = function() {
-    control = new Control('control-input', 'control-button');
+    control = new Control('control-input', 'control-button', 'button-div');
     // document.getElementById('feedback-message').innerHTML = messages.success;
 }
 
