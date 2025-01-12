@@ -4,7 +4,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab 0</title>
 </head>
-<body>
-    Hi
+<body onload="initializeGame()">
+    <script src="./js/script.js"></script>
+    <div id="control-container">
+        <p>How many buttons to create?</p>
+        <input id="control-input" type="text">
+        <button id="control-button">Go!</button>
+    </div>
+    <p id="feedback-message">...</p>
 </body>
 </html>
