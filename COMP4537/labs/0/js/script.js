@@ -148,7 +148,7 @@ class Button {
     }
 }
 
-initializeGame = function() {
+function initializeGame() {
     document.getElementById('control-label').innerHTML = messages.prompt;
     const control = new Control('control-input', 'control-button', 'button-div');
 }
