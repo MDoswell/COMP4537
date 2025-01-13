@@ -7,12 +7,12 @@ class Control {
         this.input = document.getElementById(input);
         this.button = document.getElementById(button);
         this.buttonDiv = document.getElementById(buttonDiv);
-        this.button.onclick = () => this.startGame(this);
+        this.button.onclick = this.startGame.bind(this);
     }
 
-    startGame(control) {
-        if (control.isValidInput()) {
-            control.game = new Game(control.input.value, control.buttonDiv);    
+    startGame() {
+        if (this.isValidInput()) {
+            this.game = new Game(this.input.value, this.buttonDiv);    
         }
     }
 
@@ -27,6 +27,7 @@ class Control {
 
 class Game {
     constructor(n, buttonDiv) {
+        this.nButtons = n;
         this.nScrambles = n;
         this.buttons = [];
         const buttonDivRect = buttonDiv.getBoundingClientRect();
@@ -35,47 +36,75 @@ class Game {
             this.buttons.push(button);
             buttonDiv.appendChild(button.button);
         }
-        this.scrambleTimeout = setTimeout(this.startScramble, 1000 * n, this);
+        this.scrambleTimeout = setTimeout(this.startScramble.bind(this), 1000 * n, this);
     }
 
-    startScramble(game) {
-        game.scrambleInterval = setInterval(game.updateButtons, 2000, game);
+    startScramble() {
+        this.scrambleInterval = setInterval(this.updateButtons.bind(this), 2000);
     }
 
-    updateButtons(game) {
-        game.buttons.forEach(button => {
+    updateButtons() {
+        this.buttons.forEach(button => {
             button.randomizePosition();
         })
-        if (--game.nScrambles <= 0) {
-            clearInterval(game.scrambleInterval);
-            game.startGuessing();
+        if (--this.nScrambles <= 0) {
+            clearInterval(this.scrambleInterval);
+            this.startGuessing();
             return;
         }
     }
 
     startGuessing() {
         this.buttons.forEach(button => {
-            button.hideNumber();
-            button.makeClickable();
+            button.showNumber(false);
+            button.makeClickable(true);
+            button.button.onclick = this.guessButton.bind(this, button);
         })
         this.nextButton = 1;
+    }
+
+    guessButton(button) {
+        if (button.number == this.nextButton) {
+            this.nextButton++;
+            button.showNumber(true);
+            button.makeClickable(false);
+            if (this.nextButton > this.nButtons) {
+                this.endGuessing(true);
+            }
+        } else {
+            this.endGuessing(false);
+        }
+    }
+
+    endGuessing(playerWon) {
+        this.buttons.forEach(button => {
+            button.makeClickable(false);
+            button.showNumber(true);
+        })
+        const feedbackMessage = document.getElementById('feedback-message');
+        if (playerWon) {
+            feedbackMessage.innerHTML = messages.success;
+        } else {
+            feedbackMessage.innerHTML = messages.failure;
+        }
+        feedbackMessage.style.visibility = 'visible';
+    }
+
+    reset() {
+        // TODO
     }
 }
 
 class Button {
     constructor(number, top, left) {
+        this.number = number;
         this.button = document.createElement('button');
         this.button.disabled = true;
-        this.button.onclick = this.guess.bind(this);
         this.button.classList.add('memory-button');
         this.button.style.top = top;
         this.button.style.left = left;
         this.button.innerHTML = number;
         this.button.style.backgroundColor = this.getRandomColor();
-    }
-
-    guess() {
-        this.button.style.opacity = 1;
     }
 
     getRandomColor() {
@@ -92,16 +121,18 @@ class Button {
         this.button.style.left = this.getRandomVal(window.innerWidth - this.button.clientWidth);
     }
 
-    makeClickable() {
-        this.button.disabled = false;
+    makeClickable(isClickable) {
+        this.button.disabled = !isClickable;
     }
 
-    hideNumber() {
-        this.button.innerHTML = '';
+    showNumber(showNumber) {
+        if (showNumber) {
+            this.button.innerHTML = this.number;
+        } else {
+            this.button.innerHTML = '';
+        }
     }
 }
-
-// let control;
 
 initializeGame = function() {
     const control = new Control('control-input', 'control-button', 'button-div');
