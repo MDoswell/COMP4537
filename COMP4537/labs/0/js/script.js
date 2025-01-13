@@ -1,6 +1,8 @@
 // import messages from '../lang/messages/en/user.js';
 
-const messages = {invalidInput: "Invalid input", success: "Excellent memory!", failure: "Wrong order!"};
+// ChatGPT was used to ask small design questions, but no code came from it directly
+
+const messages = {prompt: "How many buttons to create?", invalidInput: "Invalid input", success: "Excellent memory!", failure: "Wrong order!"};
 
 class Control {
     constructor(input, button, buttonDiv) {
@@ -12,6 +14,9 @@ class Control {
 
     startGame() {
         if (this.isValidInput()) {
+            if (this.game) {
+                this.game.clear();
+            }
             this.game = new Game(this.input.value, this.buttonDiv);    
         }
     }
@@ -81,17 +86,28 @@ class Game {
             button.makeClickable(false);
             button.showNumber(true);
         })
-        const feedbackMessage = document.getElementById('feedback-message');
         if (playerWon) {
-            feedbackMessage.innerHTML = messages.success;
+            this.setFeedback(messages.success, true);
         } else {
-            feedbackMessage.innerHTML = messages.failure;
+            this.setFeedback(messages.failure, true);
         }
-        feedbackMessage.style.visibility = 'visible';
     }
 
-    reset() {
-        // TODO
+    setFeedback(message, isVisible) {
+        const feedbackMessage = document.getElementById('feedback-message');
+        feedbackMessage.innerHTML = message;
+        if (isVisible) {
+            feedbackMessage.style.visibility = 'visible';
+        } else {
+            feedbackMessage.style.visibility = 'hidden';
+        }
+    }
+
+    clear() {
+        this.buttons.forEach(button => {
+            button.button.remove();
+        })
+        this.setFeedback('', false);
     }
 }
 
@@ -100,10 +116,10 @@ class Button {
         this.number = number;
         this.button = document.createElement('button');
         this.button.disabled = true;
+        this.button.innerHTML = number;
         this.button.classList.add('memory-button');
         this.button.style.top = top;
         this.button.style.left = left;
-        this.button.innerHTML = number;
         this.button.style.backgroundColor = this.getRandomColor();
     }
 
@@ -135,6 +151,7 @@ class Button {
 }
 
 initializeGame = function() {
+    document.getElementById('control-label').innerHTML = messages.prompt;
     const control = new Control('control-input', 'control-button', 'button-div');
 }
 
