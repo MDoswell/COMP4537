@@ -153,3 +153,4 @@ function initializeGame() {
     const control = new Control('control-input', 'control-button', 'button-div');
 }
 
+document.addEventListener("DOMContentLoaded", initializeGame);
