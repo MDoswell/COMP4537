@@ -1,6 +1,6 @@
 import messages from '../lang/messages/en/user.js';
 
-// ChatGPT was used to ask small design questions, but no code came from it directly
+// ChatGPT was used to ask small design questions, but no code came from it directly aside from last line
 
 class Control {
     constructor(input, button, buttonDiv) {
@@ -153,4 +153,5 @@ function initializeGame() {
     const control = new Control('control-input', 'control-button', 'button-div');
 }
 
+// ChatGPT used for this line
 document.addEventListener("DOMContentLoaded", initializeGame);
