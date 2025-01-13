@@ -1,8 +1,6 @@
-// import messages from '../lang/messages/en/user.js';
+import messages from '../lang/messages/en/user.js';
 
 // ChatGPT was used to ask small design questions, but no code came from it directly
-
-const messages = {prompt: "How many buttons to create?", invalidInput: "Invalid input", success: "Excellent memory!", failure: "Wrong order!"};
 
 class Control {
     constructor(input, button, buttonDiv) {

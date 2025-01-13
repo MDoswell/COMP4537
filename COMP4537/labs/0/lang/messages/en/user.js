@@ -1,3 +1,3 @@
-const messages = {invalidInput: "Invalid input", success: "Excellent memory!", failure: "Wrong order!"};
+const messages = {prompt: "How many buttons to create?", invalidInput: "Invalid input", success: "Excellent memory!", failure: "Wrong order!"};
 
 export {messages};
