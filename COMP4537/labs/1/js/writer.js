@@ -1,8 +1,18 @@
-let messages = {noStorage: 'localStorage not supported on this browser.', storedAt: 'Stored at: ', buttonLabelRemove: 'Remove'}
+import Note from './note';
+
+async function getMessages() {
+    const response = await fetch('../lang/messages/en/user.json')
+    if (!response.ok) 
+        return;
+    const data = await response.json();
+    return data;
+}
+let messages;
 
 document.addEventListener("DOMContentLoaded", initializeWriter);
 
-function initializeWriter() {
+async function initializeWriter() {
+    messages = await getMessages();
     const writer = new Writer(document.getElementById('notes-container'), document.getElementById('storage-time'));
 }
 
@@ -47,43 +57,43 @@ class Writer {
     }
 }
 
-class Note {
-    constructor(noteContainer, text, isWritable, storageCallback, removeCallback) {
-        this.noteContainer = noteContainer;
-        this.text = text;
-        this.isWritable = isWritable;
-        this.storageCallback = storageCallback;
-        this.removeCallback = removeCallback;
-        this.container = this.createElements();
-        noteContainer.appendChild(this.container);
-    }
+// class Note {
+//     constructor(noteContainer, text, isWritable, storageCallback, removeCallback) {
+//         this.noteContainer = noteContainer;
+//         this.text = text;
+//         this.isWritable = isWritable;
+//         this.storageCallback = storageCallback;
+//         this.removeCallback = removeCallback;
+//         this.container = this.createElements();
+//         noteContainer.appendChild(this.container);
+//     }
 
-    createElements() {
-        const container = document.createElement('div');
+//     createElements() {
+//         const container = document.createElement('div');
 
-        const field = document.createElement('textarea');
-        field.innerHTML = this.text;
-        field.oninput = () => this.update(field);
-        container.appendChild(field);
+//         const field = document.createElement('textarea');
+//         field.innerHTML = this.text;
+//         field.oninput = () => this.update(field);
+//         container.appendChild(field);
 
-        if (this.isWritable) {
-            const button = document.createElement('button');
-            button.innerHTML = messages.buttonLabelRemove;
-            button.onclick = () => this.remove();
-            container.appendChild(button);
-        }
+//         if (this.isWritable) {
+//             const button = document.createElement('button');
+//             button.innerHTML = messages.buttonLabelRemove;
+//             button.onclick = () => this.remove();
+//             container.appendChild(button);
+//         }
         
-        return container;
-    }
+//         return container;
+//     }
 
-    remove() {
-        if (this.isWritable)
-            this.removeCallback(this);
-        this.container.remove();
-    }
+//     remove() {
+//         if (this.isWritable)
+//             this.removeCallback(this);
+//         this.container.remove();
+//     }
 
-    update(field) {
-        this.text = field.value;
-        this.storageCallback();
-    }
-}
+//     update(field) {
+//         this.text = field.value;
+//         this.storageCallback();
+//     }
+// }

@@ -1,19 +1,16 @@
-
-let messages = {noStorage: 'localStorage not supported on this browser.', storedAt: 'Stored at: ', updatedAt: 'Updated at: ', buttonLabelRemove: 'Remove'}
-
-// async function getMessages() {
-//     const response = await fetch('../lang/messages/en/user.json')
-//     if (!response.ok) 
-//         return;
-//     const data = await response.json();
-//     return data;
-// }
-// let messages;
+async function getMessages() {
+    const response = await fetch('../lang/messages/en/user.json')
+    if (!response.ok) 
+        return;
+    const data = await response.json();
+    return data;
+}
+let messages;
 
 document.addEventListener("DOMContentLoaded", initializeReader);
 
 async function initializeReader() {
-    // messages = await getMessages();
+    messages = await getMessages();
     const reader = new Reader(document.getElementById('notes-container'), document.getElementById('storage-time'));
 }
 
