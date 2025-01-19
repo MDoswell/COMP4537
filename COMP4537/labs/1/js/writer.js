@@ -1,4 +1,4 @@
-import Note from './note';
+import Note from './note.js';
 
 async function getMessages() {
     const response = await fetch('../lang/messages/en/user.json')
