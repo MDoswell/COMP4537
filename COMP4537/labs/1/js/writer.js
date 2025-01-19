@@ -3,7 +3,6 @@ let messages = {noStorage: 'localStorage not supported on this browser.', stored
 document.addEventListener("DOMContentLoaded", initializeWriter);
 
 function initializeWriter() {
-    // window.postMessage("testmsg");
     const writer = new Writer(document.getElementById('notes-container'), document.getElementById('storage-time'));
 }
 
@@ -17,7 +16,7 @@ class Writer {
     }
 
     addNote(text) {
-        this.notes.push(new Note(this.noteContainer, text, this.storeNotes.bind(this), this.removeNote.bind(this)));
+        this.notes.push(new Note(this.noteContainer, text, true, this.storeNotes.bind(this), this.removeNote.bind(this)));
         this.storeNotes();
     }
 
@@ -49,9 +48,10 @@ class Writer {
 }
 
 class Note {
-    constructor(noteContainer, text, storageCallback, removeCallback) {
+    constructor(noteContainer, text, isWritable, storageCallback, removeCallback) {
         this.noteContainer = noteContainer;
         this.text = text;
+        this.isWritable = isWritable;
         this.storageCallback = storageCallback;
         this.removeCallback = removeCallback;
         this.container = this.createElements();
@@ -60,19 +60,25 @@ class Note {
 
     createElements() {
         const container = document.createElement('div');
+
         const field = document.createElement('textarea');
-        const button = document.createElement('button');
         field.innerHTML = this.text;
         field.oninput = () => this.update(field);
-        button.innerHTML = messages.buttonLabelRemove;
-        button.onclick = () => this.remove();
         container.appendChild(field);
-        container.appendChild(button);
+
+        if (this.isWritable) {
+            const button = document.createElement('button');
+            button.innerHTML = messages.buttonLabelRemove;
+            button.onclick = () => this.remove();
+            container.appendChild(button);
+        }
+        
         return container;
     }
 
     remove() {
-        this.removeCallback(this);
+        if (this.isWritable)
+            this.removeCallback(this);
         this.container.remove();
     }
 
