@@ -1,5 +1,5 @@
 async function getMessages() {
-    const response = await fetch('../lang/messages/en/user.json')
+    const response = await fetch('./lang/messages/en/user.json')
     if (!response.ok) 
         return;
     const data = await response.json();
