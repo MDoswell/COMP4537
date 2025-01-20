@@ -31,7 +31,9 @@ class Reader {
     getNotes() {
         if (typeof Storage !== "undefined") {
             this.clearNotes();
-            const notes = JSON.parse(localStorage.getItem("writerKey"));
+            let notes = JSON.parse(localStorage.getItem("writerKey"));
+            if (!notes)
+                notes = [];
             notes.forEach(note => {
                 this.addNote(note.text);
             });
