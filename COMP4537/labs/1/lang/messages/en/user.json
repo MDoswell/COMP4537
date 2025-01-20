@@ -1,6 +1,5 @@
 {
     "noStorage": "localStorage not supported on this browser.", 
     "storedAt": "Stored at: ", 
-    "updatedAt": "Updated at: ", 
-    "buttonLabelRemove": "Remove"
+    "updatedAt": "Updated at: "
 }

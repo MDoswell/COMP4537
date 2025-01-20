@@ -19,7 +19,7 @@ class Note {
 
         if (this.isWritable) {
             const button = document.createElement('button');
-            button.innerHTML = messages.buttonLabelRemove;
+            button.innerHTML = "Remove";
             button.onclick = () => this.remove();
             container.appendChild(button);
         }
