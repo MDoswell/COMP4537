@@ -23,6 +23,7 @@ class Reader {
             this.getNotes();
         }
         this.getNotes();
+        this.updateInterval = setInterval(this.getNotes.bind(this), 2000);
     }
 
     getNotes() {
