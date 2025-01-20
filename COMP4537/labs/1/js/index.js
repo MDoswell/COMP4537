@@ -7,7 +7,7 @@ async function getMessages() {
 }
 let messages;
 
-document.addEventListener("DOMContentLoaded", initializeWriter);
+document.addEventListener("DOMContentLoaded", initializePage);
 
 async function initializePage() {
     messages = await getMessages();
