@@ -13,6 +13,6 @@ async function initializePage() {
     messages = await getMessages();
     document.getElementById("title-text").innerHTML = messages.title;
     document.getElementById("top-header").innerHTML = messages.title;
-    document.getElementById("reader-link").innerHTML = messages.readerLink;
-    document.getElementById("writer-link").innerHTML = messages.writerLink;
+    document.getElementById("reader-link").innerHTML = messages.readerPage;
+    document.getElementById("writer-link").innerHTML = messages.writerPage;
 }
