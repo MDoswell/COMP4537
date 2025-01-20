@@ -18,6 +18,7 @@ class Note {
         container.appendChild(field);
 
         if (this.isWritable) {
+            field.disabled = true;
             const button = document.createElement('button');
             button.innerHTML = "Remove";
             button.onclick = () => this.remove();
