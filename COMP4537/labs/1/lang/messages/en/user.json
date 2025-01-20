@@ -1,4 +1,7 @@
 {
+    "title": "Lab 1: JSON, Object Constructor, localStorage",
+    "writerPage": "Writer",
+    "readerPage": "Reader",
     "noStorage": "localStorage not supported on this browser.", 
     "storedAt": "Stored at: ", 
     "updatedAt": "Updated at: "
