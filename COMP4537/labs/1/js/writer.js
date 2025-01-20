@@ -33,6 +33,8 @@ class Writer {
     getNotes() {
         if (typeof Storage !== "undefined") {
             const notes = JSON.parse(localStorage.getItem("writerKey"));
+            if (!notes)
+                notes = [];
             notes.forEach(note => {
                 this.addNote(note.text);
             });
