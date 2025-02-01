@@ -8,6 +8,7 @@ const routes = [
 ]
 
 http.createServer((req, res) => {
+    console.log(req.url)
     const urlParts = url.parse(req.url)
     for (let i = 0; i < routes.length; i++) {
         if (urlParts.pathname.toLowerCase() === routes[i].path || urlParts.pathname.toLowerCase() === routes[i].path + '/') {
