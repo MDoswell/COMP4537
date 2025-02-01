@@ -1,20 +1,23 @@
 const http = require('http')
-const fs = require('fs')
-const Utils = require('./modules/utils')
+const url = require('url')
+const {getDate} = require('./modules/getDate')
 
-const utils = new Utils()
-const messages = JSON.parse(fs.readFileSync('./lang/en/en.json'))
+const routes = [
+    {path: "/getdate", action: getDate},
+    {path: "/writefile", action: writeTest}
+]
 
 http.createServer((req, res) => {
-    getDate(req, res)
+    const urlParts = url.parse(req.url)
+    for (let i = 0; i < routes.length; i++) {
+        console.log("req url: " + req.url + ", route: " + routes[i].path)
+        if (urlParts.pathname.toLowerCase() === routes[i].path || urlParts.pathname.toLowerCase() === routes[i].path + '/') {
+            console.log("match")
+            return routes[i].action(req, res)
+        }
+    }
+    res.writeHead(404, { 'content-type': 'text/html' })
+    res.end("404 - Not found")
 }).listen(8088)
 
 console.log('Server listening...')
-
-function getDate(req, res) {
-    console.log(req.url)
-    const params = new URLSearchParams(req.url.substring(1))
-    res.writeHead(200, { 'content-type': 'text/html' })
-    res.write(`<p style='color: #00f'>${utils.formatUserString(messages.hello, params.get('name'))} ${utils.getDate()}</p>`)
-    res.end()
-}
