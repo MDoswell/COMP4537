@@ -7,7 +7,7 @@ const messages = JSON.parse(fs.readFileSync('./lang/en/en.json'))
 
 http.createServer((req, res) => {
     getDate(req, res)
-}).listen(8080)
+}).listen(8088)
 
 console.log('Server listening...')
 
