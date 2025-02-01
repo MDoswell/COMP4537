@@ -1,22 +1,36 @@
 const http = require('http')
 const url = require('url')
-const {getDate} = require('./modules/getDate')
+const fs = require('fs')
+const RouteHandler = require('./modules/routeHandler')
 
-const routes = [
-    {path: "/getdate", action: getDate},
-    // {path: "/writefile", action: writeTest}
-]
+class Server {
 
-http.createServer((req, res) => {
-    console.log(req.url)
-    const urlParts = url.parse(req.url)
-    for (let i = 0; i < routes.length; i++) {
-        if (urlParts.pathname.toLowerCase() === routes[i].path || urlParts.pathname.toLowerCase() === routes[i].path + '/') {
-            return routes[i].action(req, res)
-        }
+    constructor() {
+        this.routeHandler = new RouteHandler();
+        const messages = JSON.parse(fs.readFileSync('./lang/en/en.json'))
+        this.notFound = messages.notFound
+        this.routes = [
+            {pathRegex: /^\/getdate\/?$/, action: this.routeHandler.getDate},
+            {pathRegex: /^\/writefile\/?$/, action: this.routeHandler.writeFile},
+            {pathRegex: /^\/readfile(?:\/[^\/]*[\/]?)?$/, action: this.routeHandler.readFile}
+        ]
     }
-    res.writeHead(404, { 'content-type': 'text/html' })
-    res.end("404 - Not found")
-}).listen(8088)
 
-console.log('Server listening...')
+    start() {
+        http.createServer((req, res) => {
+            const urlParts = url.parse(req.url)
+            for (let i = 0; i < this.routes.length; i++) {
+                if (this.routes[i].pathRegex.test(urlParts.pathname.toLowerCase())) {
+                    return this.routes[i].action(req, res)
+                }
+            }
+            res.writeHead(404, { 'content-type': 'text/html' })
+            res.end(this.notFound)
+        }).listen(8088)
+        
+        console.log('Server listening...')
+    }
+}
+
+const server = new Server();
+server.start();

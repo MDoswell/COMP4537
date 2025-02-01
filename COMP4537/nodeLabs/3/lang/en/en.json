@@ -1,1 +1,11 @@
-{"hello": "Hello %1, What a beautiful day. Server current date and time is "}
+{
+    "notFound": "404: Not Found!",
+    "fileNotFound": "404: File %1 Not Found!",
+    "hello": "Hello %1, What a beautiful day. Server current date and time is ",
+    "wroteFile": "Wrote text to file: ",
+    "writeNull": "Could not write to file: text is null!",
+    "writeError": "Could not write text to file: ",
+    "readFile": "Read from file ",
+    "readNull": "Could not read: no file specified.",
+    "readError": "Could not read file: "
+}
